@@ -10,9 +10,9 @@ async def get_vpn_key_by_user_id(session: AsyncSession, user_id: str) -> list[VP
     result = await session.execute(query)
     return result.scalar_one_or_none()
 
-async def create_vpn_key(session: AsyncSession, user_id: str, created_key: str, key_uuid: str, key_email: str) -> VPNKey:
+async def create_vpn_key(session: AsyncSession, user_id: str, created_key: str, key_uuid: str, key_email: str, server_id: int) -> VPNKey:
     # временно key_email и key_sub_id одинаковые
-    vpn_key = VPNKey(user_id=user_id, full_key_data=created_key, key_uuid=key_uuid, key_email=key_email, key_sub_id=key_email)
+    vpn_key = VPNKey(user_id=user_id, full_key_data=created_key, key_uuid=key_uuid, key_email=key_email, key_sub_id=key_email, server_id=server_id)
     session.add(vpn_key)
     await session.commit()
     await session.refresh(vpn_key)

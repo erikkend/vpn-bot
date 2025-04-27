@@ -85,7 +85,7 @@ async def create_new_key(session, order, bot: Bot, months, region):
     connection_str = await generate_connection_string(api, settings[0], settings[1], server_ip)
 
     if new_client:
-        vpn_key = await create_vpn_key(session, order.user_id, connection_str, settings[0], settings[1])
+        vpn_key = await create_vpn_key(session, order.user_id, connection_str, settings[0], settings[1], server.id)
         await create_subscription(session, vpn_key.id, expires_at)
         user = await get_user_by_user_id(session, order.user_id)
         await bot.send_message(user.telegram_id, f"✅ Оплата прошла. Ваш VPN:\n`{vpn_key.full_key_data}`", parse_mode="Markdown")
