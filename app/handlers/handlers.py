@@ -1,3 +1,4 @@
+# handlers.py
 from datetime import datetime
 
 from aiogram import Router, F
@@ -43,11 +44,10 @@ async def show_servers(callback: CallbackQuery, state: FSMContext):
             print(f"server_region: {server_region}")
             await state.update_data(region=server_region)
             await state.set_state(VPNStates.select_tariff)
-            await callback.message.answer("Выбери тариф:", reply_markup=keyboards.price_kb)
-            await state.set_state(VPNStates.select_tariff)
+            await callback.message.edit_text("Выбери тариф:", reply_markup=keyboards.price_kb)
         else:
             # нужно билдть клаву т.е показывать только те регионы которые is_active
-            await callback.message.answer("Выбери регион сервера:", reply_markup=keyboards.regions_kb)
+            await callback.message.edit_text("Выбери регион сервера:", reply_markup=keyboards.regions_kb)
             await state.set_state(VPNStates.select_server)
 
 
@@ -56,7 +56,7 @@ async def handle_region(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
     data = callback.data.split(":")[1]
     await state.update_data(region=data)
-    await callback.message.answer("Выбери тариф:", reply_markup=keyboards.price_kb)
+    await callback.message.edit_text("Выбери тариф:", reply_markup=keyboards.price_kb)
     await state.set_state(VPNStates.select_tariff)
 
 @router.callback_query(VPNStates.select_tariff, F.data.startswith("tariff:"))
@@ -89,8 +89,10 @@ async def form_price(callback: CallbackQuery, state: FSMContext):
 
         kb = keyboards.create_invoice_keyboard(invoice['result']['url'])
         await update_order_info(session, order.id, invoice['result']['uuid'])
-        await callback.message.answer(text="""❗️ При оплате криптой учитывайте, что выдача доступа происходит в течении 5 минут ПОСЛЕ ПОДТВЕРЖДЕНИЯ ОПЛАТЫ.\nЕсли возникли вопросы с оплатой ты всегда можешь написать нам.""",
-                                      reply_markup=kb)
+        await callback.message.edit_text(
+            text="""❗️ При оплате криптой учитывайте, что выдача доступа происходит в течении 5 минут ПОСЛЕ ПОДТВЕРЖДЕНИЯ ОПЛАТЫ.\nЕсли возникли вопросы с оплатой ты всегда можешь написать нам.""",
+            reply_markup=kb
+        )
 
 
 @router.callback_query(F.data == "my_key")
@@ -102,67 +104,100 @@ async def show_all_config(callback: CallbackQuery):
         if vpn_key:
             date = vpn_key.subscription.expires_at
             formatted_date = datetime.strftime(date, "%Y.%m.%d %H:%M")
-            await callback.message.answer(f"Ключ работает до: {formatted_date}\nКлюч:\n`{vpn_key.full_key_data}`", parse_mode="Markdown")
+            await callback.message.edit_text(
+                f"Ключ работает до: {formatted_date}\nКлюч:\n`{vpn_key.full_key_data}`", 
+                parse_mode="Markdown",
+                reply_markup=keyboards.main_kb
+            )
         else:
-            await callback.message.answer(f"У вас нет VPN-ключа",
-                                          parse_mode="Markdown")
+            await callback.message.edit_text(
+                f"У вас нет VPN-ключа",
+                parse_mode="Markdown",
+                reply_markup=keyboards.main_kb
+            )
 
 
 @router.callback_query(F.data == "supp_contacts")
 async def support_contacts(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("Телеграм: `@xtwdgnuuqp`\nПочта: `darhanuva@gmail.com`", parse_mode="Markdown")
+    await callback.message.edit_text(
+        "Телеграм: `@xtwdgnuuqp`\nПочта: `darhanuva@gmail.com`", 
+        parse_mode="Markdown",
+        reply_markup=keyboards.main_kb
+    )
 
 @router.callback_query(F.data == "guide")
 async def guide(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("Выбери свое устройство:", reply_markup=keyboards.guide_kb)
+    await callback.message.edit_text(
+        "Выбери свое устройство:", 
+        reply_markup=keyboards.guide_kb
+    )
     
 @router.callback_query(F.data == "android")
 async def android_guide(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("""📱 Инструкция для Android:
+    await callback.message.edit_text(
+        """📱 Инструкция для Android:
 
 1. Скачайте приложение Hiddify (https://play.google.com/store/apps/details?id=app.hiddify.com) из Google Play.
 2. Скопируйте ключ подписки в буфер обмена.
 3. Откройте приложение Hiddify (https://play.google.com/store/apps/details?id=app.hiddify.com), разрешите доступ к сетям при необходимости. 
 4. Добавьте профиль, нажав плюсик в правом верхнем углу приложения. Далее нажмите "Добавить из буфера обмена". Профиль появится в приложении.
-5. Для подключения к профилю vpn нажмите по центру экрана.""", parse_mode="Markdown", reply_markup=keyboards.guide_back)
+5. Для подключения к профилю vpn нажмите по центру экрана.""", 
+        parse_mode="Markdown", 
+        reply_markup=keyboards.guide_back
+    )
 
 @router.callback_query(F.data == "windows")
 async def windows_guide(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("""💻 Инструкция для Windows:
+    await callback.message.edit_text(
+        """💻 Инструкция для Windows:
 
 1. Скачайте и установите приложение Hiddify (https://apps.microsoft.com/detail/9PDFNL3QV2S5?hl=en&gl=RU&ocid=pdpshare) из Microsoft Store или официального сайта (https://hiddify.com/).
 2. Скопируйте ключ подписки в буфер обмена.
 3. Откройте приложение Hiddify (https://apps.microsoft.com/detail/9PDFNL3QV2S5?hl=en&gl=RU&ocid=pdpshare), разрешите доступ от имени администратора при необходимости.
 4. Добавьте профиль, нажав плюсик в правом верхнем углу приложения. Далее нажмите "Добавить из буфера обмена". Профиль появится в приложении.
-5. Для подключения к профилю vpn нажмите по центру экрана.""", parse_mode="Markdown", reply_markup=keyboards.guide_back)
+5. Для подключения к профилю vpn нажмите по центру экрана.""", 
+        parse_mode="Markdown", 
+        reply_markup=keyboards.guide_back
+    )
     
 @router.callback_query(F.data == "ios")
 async def ios_guide(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("""🍎 Инструкция для Iphone:
+    await callback.message.edit_text(
+        """🍎 Инструкция для Iphone:
 
 1. Скачайте приложение FoXray (https://apps.apple.com/app/id6448898396) либо Streisand (https://apps.apple.com/app/id6450534064) из App Store.
 2. Скопируйте ключ подписки в буфер обмена.
 3. Откройте приложение FoXray (https://apps.apple.com/app/id6448898396), разрешите доступ к сетям при необходимости. 
 4. Добавьте профиль, нажав кнопку "Вставки ⧉". Далее разрешите доступ к вставке.
-5. Профиль появится в нижней части экрана, нажмите кнопку "Запуска ▷".""", parse_mode="Markdown", reply_markup=keyboards.guide_back)
+5. Профиль появится в нижней части экрана, нажмите кнопку "Запуска ▷".""", 
+        parse_mode="Markdown", 
+        reply_markup=keyboards.guide_back
+    )
     
 @router.callback_query(F.data == "macos")
 async def macos_guide(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("""🍏 Инструкция для Mac:
+    await callback.message.edit_text(
+        """🍏 Инструкция для Mac:
 
 1. Скачайте и установите приложение Hiddify (https://apps.apple.com/us/app/hiddify-proxy-vpn/id6596777532) из App Store или официального сайта (https://hiddify.com/).
 2. Скопируйте ключ подписки в буфер обмена.
 3. Откройте приложение Hiddify (https://apps.apple.com/us/app/hiddify-proxy-vpn/id6596777532).
 4. Добавьте профиль, нажав плюсик в правом верхнем углу приложения. Далее нажмите "Добавить из буфера обмена". Профиль появится в приложении.
-5. Для подключения к профилю vpn нажмите по центру экрана.""", parse_mode="Markdown", reply_markup=keyboards.guide_back)
+5. Для подключения к профилю vpn нажмите по центру экрана.""", 
+        parse_mode="Markdown", 
+        reply_markup=keyboards.guide_back
+    )
     
 @router.callback_query(F.data == "main_menu")
 async def main_menu(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("Главное меню", reply_markup=keyboards.main_kb)
+    await callback.message.edit_text(
+        "Главное меню", 
+        reply_markup=keyboards.main_kb
+    )
