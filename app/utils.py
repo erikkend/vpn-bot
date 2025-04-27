@@ -11,13 +11,6 @@ def generate_custom_id(length=13):
     characters = string.ascii_lowercase + string.digits  # a-z и 0-9
     return ''.join(random.choice(characters) for _ in range(length))
 
-
-def create_settings_for_new_key() -> tuple:    
-    generated_uuid = generate_uuid()
-    sub_id = generate_custom_id()
-
-    return generated_uuid, sub_id
-
 def create_settings_for_update_key(date, key_uuid, key_email, inbound_id=2) -> dict:
     timestamp = int(date.timestamp() * 1000)
 

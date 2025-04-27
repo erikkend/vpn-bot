@@ -135,8 +135,8 @@ workload
 ngrok http --url=dear-genuine-scorpion.ngrok-free.app 80
 
 5. сделать другого юзера для БД 
- при создании vpn_key указать айди сервера
- убрать баг при обновлении ключа, чтобы не слетал flow
+    + при создании vpn_key указать айди сервера
+    + убрать баг при обновлении ключа, чтобы не слетал flow
 
 переделать utils.create_settings_for_new_key() в routes
 

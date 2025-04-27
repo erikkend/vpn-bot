@@ -74,18 +74,19 @@ async def create_new_key(session, order, bot: Bot, months, region):
     now = datetime.now().replace(tzinfo=None)
     expires_at = now + relativedelta(months=months)
     timestamp = int(expires_at.timestamp() * 1000)
-    settings = utils.create_settings_for_new_key()
+    generated_uuid = utils.generate_uuid()
+    genetated_subid = utils.generate_custom_id()
     
-    new_client = Client(id=settings[0], email=settings[1], enable=True, flow="xtls-rprx-vision", expiryTime=timestamp)
+    new_client = Client(id=generated_uuid, email=genetated_subid, enable=True, flow="xtls-rprx-vision", expiryTime=timestamp)
     inbound_id = 1
 
     await api.client.add(inbound_id, [new_client])
-    new_client = await api.client.get_by_email(settings[1])
+    new_client = await api.client.get_by_email(genetated_subid)
     
-    connection_str = await generate_connection_string(api, settings[0], settings[1], server_ip)
+    connection_str = await generate_connection_string(api, generated_uuid, genetated_subid, server_ip)
 
     if new_client:
-        vpn_key = await create_vpn_key(session, order.user_id, connection_str, settings[0], settings[1], server.id)
+        vpn_key = await create_vpn_key(session, order.user_id, connection_str, generated_uuid, genetated_subid, server.id)
         await create_subscription(session, vpn_key.id, expires_at)
         user = await get_user_by_user_id(session, order.user_id)
         await bot.send_message(user.telegram_id, f"✅ Оплата прошла. Ваш VPN:\n`{vpn_key.full_key_data}`", parse_mode="Markdown")
@@ -110,6 +111,8 @@ async def prolong_key(session, bot, user, vpn_key, months):
     client = await api.client.get_by_email(vpn_key.key_email)
     print(client)
     client.expiry_time = timestamp
+    client.flow = "xtls-rprx-vision"
+    client.enable = True
     
     await api.client.update(vpn_key.key_uuid, client)
 
