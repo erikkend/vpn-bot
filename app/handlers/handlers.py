@@ -112,3 +112,58 @@ async def show_all_config(callback: CallbackQuery):
 async def support_contacts(callback: CallbackQuery):
     await callback.answer()
     await callback.message.answer("Телеграм: `@xtwdgnuuqp`\nПочта: `darhanuva@gmail.com`", parse_mode="Markdown")
+
+@router.callback_query(F.data == "guide")
+async def guide(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer("Выбери свое устройство:", reply_markup=keyboards.guide_kb)
+    
+@router.callback_query(F.data == "android")
+async def android_guide(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer("""📱 Инструкция для Android:
+
+1. Скачайте приложение Hiddify (https://play.google.com/store/apps/details?id=app.hiddify.com) из Google Play.
+2. Скопируйте ключ подписки в буфер обмена.
+3. Откройте приложение Hiddify (https://play.google.com/store/apps/details?id=app.hiddify.com), разрешите доступ к сетям при необходимости. 
+4. Добавьте профиль, нажав плюсик в правом верхнем углу приложения. Далее нажмите "Добавить из буфера обмена". Профиль появится в приложении.
+5. Для подключения к профилю vpn нажмите по центру экрана.""", parse_mode="Markdown", reply_markup=keyboards.guide_back)
+
+@router.callback_query(F.data == "windows")
+async def windows_guide(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer("""💻 Инструкция для Windows:
+
+1. Скачайте и установите приложение Hiddify (https://apps.microsoft.com/detail/9PDFNL3QV2S5?hl=en&gl=RU&ocid=pdpshare) из Microsoft Store или официального сайта (https://hiddify.com/).
+2. Скопируйте ключ подписки в буфер обмена.
+3. Откройте приложение Hiddify (https://apps.microsoft.com/detail/9PDFNL3QV2S5?hl=en&gl=RU&ocid=pdpshare), разрешите доступ от имени администратора при необходимости.
+4. Добавьте профиль, нажав плюсик в правом верхнем углу приложения. Далее нажмите "Добавить из буфера обмена". Профиль появится в приложении.
+5. Для подключения к профилю vpn нажмите по центру экрана.""", parse_mode="Markdown", reply_markup=keyboards.guide_back)
+    
+@router.callback_query(F.data == "ios")
+async def ios_guide(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer("""🍎 Инструкция для Iphone:
+
+1. Скачайте приложение FoXray (https://apps.apple.com/app/id6448898396) либо Streisand (https://apps.apple.com/app/id6450534064) из App Store.
+2. Скопируйте ключ подписки в буфер обмена.
+3. Откройте приложение FoXray (https://apps.apple.com/app/id6448898396), разрешите доступ к сетям при необходимости. 
+4. Добавьте профиль, нажав кнопку "Вставки ⧉". Далее разрешите доступ к вставке.
+5. Профиль появится в нижней части экрана, нажмите кнопку "Запуска ▷".""", parse_mode="Markdown", reply_markup=keyboards.guide_back)
+    
+@router.callback_query(F.data == "macos")
+async def macos_guide(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer("""🍏 Инструкция для Mac:
+
+1. Скачайте и установите приложение Hiddify (https://apps.apple.com/us/app/hiddify-proxy-vpn/id6596777532) из App Store или официального сайта (https://hiddify.com/).
+2. Скопируйте ключ подписки в буфер обмена.
+3. Откройте приложение Hiddify (https://apps.apple.com/us/app/hiddify-proxy-vpn/id6596777532).
+4. Добавьте профиль, нажав плюсик в правом верхнем углу приложения. Далее нажмите "Добавить из буфера обмена". Профиль появится в приложении.
+5. Для подключения к профилю vpn нажмите по центру экрана.""", parse_mode="Markdown", reply_markup=keyboards.guide_back)
+    
+@router.callback_query(F.data == "linux")
+async def linux_guide(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer("https://telegra.ph/Linux-09-14", parse_mode="Markdown")
+    
