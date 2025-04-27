@@ -89,12 +89,12 @@ class PanelAPI:
         return dict(cookies)
 
     async def test(self):
-        client_settings = {"order_id": "49",
+        client_settings = {"order_id": "10",
                            "status": "paid"
         }
 
         async with self._session.post(
-                "https://dear-genuine-scorpion.ngrok-free.app/demo-post/",
+                "https://stablevpn.shop/demo-post/",
                 json=client_settings
         ) as response:
             text = await response.text()

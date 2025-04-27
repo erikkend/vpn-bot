@@ -98,9 +98,8 @@ async def show_all_config(callback: CallbackQuery):
     await callback.answer()
     async for session in get_session():
         user = await get_user_by_telegram_id(session, str(callback.from_user.id))
-        user_key_list = await get_vpn_key_by_user_id(session, user.id)
-        if user_key_list:
-            vpn_key = user_key_list[0]
+        vpn_key = await get_vpn_key_by_user_id(session, user.id)
+        if vpn_key:
             date = vpn_key.subscription.expires_at
             formatted_date = datetime.strftime(date, "%Y.%m.%d %H:%M")
             await callback.message.answer(f"Ключ работает до: {formatted_date}\nКлюч:\n`{vpn_key.full_key_data}`", parse_mode="Markdown")
