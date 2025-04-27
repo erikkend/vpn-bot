@@ -34,4 +34,5 @@ regions_kb = InlineKeyboardMarkup(inline_keyboard=[
 guide_kb = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="📱 Android", callback_data="android"), InlineKeyboardButton(text="🍎 iOS", callback_data="ios")],
     [InlineKeyboardButton(text="💻 Windows", callback_data="windows"), InlineKeyboardButton(text="🍏 MacOS", callback_data="macos")],
+    [InlineKeyboardButton(text="Вернуться", callback_data="main_menu")],
 ])

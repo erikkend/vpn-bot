@@ -162,8 +162,7 @@ async def macos_guide(callback: CallbackQuery):
 4. Добавьте профиль, нажав плюсик в правом верхнем углу приложения. Далее нажмите "Добавить из буфера обмена". Профиль появится в приложении.
 5. Для подключения к профилю vpn нажмите по центру экрана.""", parse_mode="Markdown", reply_markup=keyboards.guide_back)
     
-@router.callback_query(F.data == "linux")
-async def linux_guide(callback: CallbackQuery):
+@router.callback_query(F.data == "main_menu")
+async def main_menu(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("https://telegra.ph/Linux-09-14", parse_mode="Markdown")
-    
+    await callback.message.answer("Главное меню", reply_markup=keyboards.main_kb)
