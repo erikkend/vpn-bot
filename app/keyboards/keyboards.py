@@ -1,5 +1,11 @@
 from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton, InlineKeyboardBuilder
 
+regiosn_text = {
+    "GE": "🇩🇪 Германия",
+    "FR": "🇫🇷 Франция",
+    "NE": "🇳🇱 Нидерланды",
+    "AV": "🇱🇻 Австрия",
+}
 
 def create_invoice_keyboard(invoice_url):
     markup = InlineKeyboardMarkup(inline_keyboard=[
@@ -14,7 +20,7 @@ def create_servers_keyboard(regions: list[str]):
 
     for region in regions:
         builder.button(
-            text=region, 
+            text=regiosn_text.get(region, region),
             callback_data=f"region:{region}"
         )
 
