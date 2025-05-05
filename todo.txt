@@ -140,8 +140,10 @@ ngrok http --url=dear-genuine-scorpion.ngrok-free.app 80
 + переделать utils.create_settings_for_new_key() в routes
 
  - сделать другого юзера для БД 
- - сделать инструкции
+ ++ сделать инструкции
  - генерировать клаву серверов учитывая только активные сервера 
+ + отправлять инвойс отдельно
+
 
 server {
     listen 80;

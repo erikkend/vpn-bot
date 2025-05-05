@@ -1,4 +1,4 @@
-from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.utils.keyboard import InlineKeyboardMarkup, InlineKeyboardButton, InlineKeyboardBuilder
 
 
 def create_invoice_keyboard(invoice_url):
@@ -9,14 +9,18 @@ def create_invoice_keyboard(invoice_url):
     return markup
 
 
+def create_servers_keyboard(servers):
+    builder = InlineKeyboardBuilder()
+    
+
 guide_back = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text="Вернуться", callback_data="guide")]
+    [InlineKeyboardButton(text="🔙 Вернуться", callback_data="guide")]
 ])
 
 
 main_kb = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text="✏️Купить/Продлить ключ", callback_data='buy_key'), InlineKeyboardButton(text="🔑Мой ключ", callback_data='my_key')],
-    [InlineKeyboardButton(text="Контакты поддержки", callback_data="supp_contacts"), InlineKeyboardButton(text="📚 Инструкции", callback_data="guide")],
+    [InlineKeyboardButton(text="✏️ Купить/Продлить ключ", callback_data='buy_key'), InlineKeyboardButton(text="🔑 Мой ключ", callback_data='my_key')],
+    [InlineKeyboardButton(text="🛟 Контакты поддержки", callback_data="supp_contacts"), InlineKeyboardButton(text="📚 Инструкции", callback_data="guide")],
 ])
 
 price_kb = InlineKeyboardMarkup(inline_keyboard=[
@@ -34,5 +38,5 @@ regions_kb = InlineKeyboardMarkup(inline_keyboard=[
 guide_kb = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="📱 Android", callback_data="android"), InlineKeyboardButton(text="🍎 iOS", callback_data="ios")],
     [InlineKeyboardButton(text="💻 Windows", callback_data="windows"), InlineKeyboardButton(text="🍏 MacOS", callback_data="macos")],
-    [InlineKeyboardButton(text="Вернуться", callback_data="main_menu")],
+    [InlineKeyboardButton(text="🔙 Вернуться", callback_data="main_menu")],
 ])

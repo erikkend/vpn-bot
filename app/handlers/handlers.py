@@ -13,7 +13,7 @@ from app.services.payments.heleket_api import create_invoice
 from app.crud.user_service import get_user_by_telegram_id, create_user
 from app.crud.vpn_key_service import get_vpn_key_by_user_id
 from app.crud.order_service import create_order, update_order_info
-
+from app.crud.server_service import select_active_regions
 
 router = Router()
 
@@ -41,13 +41,16 @@ async def show_servers(callback: CallbackQuery, state: FSMContext):
         vpn_key = await get_vpn_key_by_user_id(session, user.id)
         if vpn_key:
             server_region = vpn_key.server.region
-            print(f"server_region: {server_region}")
+            
             await state.update_data(region=server_region)
             await state.set_state(VPNStates.select_tariff)
             await callback.message.edit_text("Выбери тариф:", reply_markup=keyboards.price_kb)
         else:
             # нужно билдть клаву т.е показывать только те регионы которые is_active
-            await callback.message.edit_text("Выбери регион сервера:", reply_markup=keyboards.regions_kb)
+            regions = await select_active_regions(session)
+            markup = keyboards.create_servers_keyboard(regions)
+            
+            await callback.message.edit_text("Выбери регион сервера:", reply_markup=markup)
             await state.set_state(VPNStates.select_server)
 
 
@@ -89,7 +92,7 @@ async def form_price(callback: CallbackQuery, state: FSMContext):
 
         kb = keyboards.create_invoice_keyboard(invoice['result']['url'])
         await update_order_info(session, order.id, invoice['result']['uuid'])
-        await callback.message.edit_text(
+        await callback.message.answer(
             text="""❗️ При оплате криптой учитывайте, что выдача доступа происходит в течении 5 минут ПОСЛЕ ПОДТВЕРЖДЕНИЯ ОПЛАТЫ.\nЕсли возникли вопросы с оплатой ты всегда можешь написать нам.""",
             reply_markup=kb
         )
@@ -121,7 +124,7 @@ async def show_all_config(callback: CallbackQuery):
 async def support_contacts(callback: CallbackQuery):
     await callback.answer()
     await callback.message.edit_text(
-        "Телеграм: `@xtwdgnuuqp`\nПочта: `darhanuva@gmail.com`", 
+        "Почта: `darhanuva@gmail.com`", 
         parse_mode="Markdown",
         reply_markup=keyboards.main_kb
     )
