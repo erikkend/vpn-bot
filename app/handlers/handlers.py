@@ -13,7 +13,7 @@ from app.services.payments.heleket_api import create_invoice
 from app.crud.user_service import get_user_by_telegram_id, create_user
 from app.crud.vpn_key_service import get_vpn_key_by_user_id
 from app.crud.order_service import create_order, update_order_info
-from app.crud.server_service import select_active_regions
+from app.crud.server_service import get_active_regions
 
 router = Router()
 
@@ -47,7 +47,7 @@ async def show_servers(callback: CallbackQuery, state: FSMContext):
             await callback.message.edit_text("Выбери тариф:", reply_markup=keyboards.price_kb)
         else:
             # нужно билдть клаву т.е показывать только те регионы которые is_active
-            regions = await select_active_regions(session)
+            regions = await get_active_regions(session)
             markup = keyboards.create_servers_keyboard(regions)
             
             await callback.message.edit_text("Выбери регион сервера:", reply_markup=markup)

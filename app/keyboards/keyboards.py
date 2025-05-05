@@ -9,9 +9,19 @@ def create_invoice_keyboard(invoice_url):
     return markup
 
 
-def create_servers_keyboard(servers):
+def create_servers_keyboard(regions: list[str]):
     builder = InlineKeyboardBuilder()
-    
+
+    for region in regions:
+        builder.button(
+            text=region, 
+            callback_data=f"region:{region}"
+        )
+
+    # Можно настроить количество кнопок в ряду, например, по 2
+    builder.adjust(2)
+
+    return builder.as_markup()
 
 guide_back = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="🔙 Вернуться", callback_data="guide")]
