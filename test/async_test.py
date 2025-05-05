@@ -89,7 +89,7 @@ class PanelAPI:
         return dict(cookies)
 
     async def test(self):
-        client_settings = {"order_id": "13",
+        client_settings = {"order_id": "14",
                            "status": "paid"
         }
 

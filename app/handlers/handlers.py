@@ -30,7 +30,7 @@ async def start(message: Message):
         if not user:
             await create_user(session, str(message.from_user.id), message.from_user.username)
 
-    await message.answer(text="""Главное меню""", reply_markup=keyboards.main_kb)
+    await message.answer(reply_markup=keyboards.main_kb)
 
 
 @router.callback_query(F.data == "buy_key")
@@ -107,13 +107,13 @@ async def show_all_config(callback: CallbackQuery):
         if vpn_key:
             date = vpn_key.subscription.expires_at
             formatted_date = datetime.strftime(date, "%Y.%m.%d %H:%M")
-            await callback.message.edit_text(
-                f"Ключ работает до: {formatted_date}\nКлюч:\n`{vpn_key.full_key_data}`", 
-                parse_mode="Markdown",
+            await callback.message.answer(
+                f"*🔑 Ключ работает до:* `{formatted_date}`\n*🧩 Ключ*:`{vpn_key.full_key_data}`", 
+                parse_mode="MarkdownV2",
                 reply_markup=keyboards.main_kb
             )
         else:
-            await callback.message.edit_text(
+            await callback.message.answer(
                 f"У вас нет VPN-ключа",
                 parse_mode="Markdown",
                 reply_markup=keyboards.main_kb
