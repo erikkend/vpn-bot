@@ -110,13 +110,11 @@ async def show_all_config(callback: CallbackQuery):
             await callback.message.answer(
                 f"*🔑 Ключ работает до:* `{formatted_date}`\n*🧩 Ключ*:`{vpn_key.full_key_data}`", 
                 parse_mode="MarkdownV2",
-                reply_markup=keyboards.main_kb
             )
         else:
             await callback.message.answer(
                 f"У вас нет VPN-ключа",
                 parse_mode="Markdown",
-                reply_markup=keyboards.main_kb
             )
 
 
