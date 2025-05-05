@@ -30,7 +30,7 @@ async def start(message: Message):
         if not user:
             await create_user(session, str(message.from_user.id), message.from_user.username)
 
-    await message.answer(reply_markup=keyboards.main_kb)
+    await message.answer(text="", reply_markup=keyboards.main_kb)
 
 
 @router.callback_query(F.data == "buy_key")
